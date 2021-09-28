@@ -54,7 +54,7 @@ export const register=(userdata)=>async(dispatch)=>{
     try {
         dispatch({type:REGISTER_USER_REQUEST})
        
-        const {data}= await axios.post(`/api/user/register`,userdata)
+        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/user/register`,userdata)
         dispatch({
             type:REGISTER_USER_SUCCESS,
                    payload:data.user
@@ -73,7 +73,7 @@ export const loaduser=()=>async(dispatch)=>{
     try {
         dispatch({type:LOAD_USER_REQUEST})
        
-        const {data}= await axios.get(`/api/user/profile`)
+        const {data}= await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`)
         dispatch({type:LOAD_USER_SUCCESS,
                    payload:data.userprofile})
         
@@ -90,7 +90,7 @@ export const logoutuser=()=>async(dispatch)=>{
     try {
         
        
-        await axios.get(`/api/user/logout`)
+        await axios.get(`https://loadrunner12.herokuapp.com/api/user/logout`)
         dispatch({type:LOGOUT_SUCCESS
                    })
         
@@ -108,7 +108,7 @@ export const allUsers = () => async (dispatch) => {
 
         dispatch({ type: ALL_USERS_REQUEST })
 
-        const { data } = await axios.get(`/api/admin/alldrivers`)
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/admin/alldrivers`)
 
         dispatch({
             type: ALL_USERS_SUCCESS,
@@ -132,7 +132,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
      
       
 
-        const { data } = await axios.put(`/api/admin/approved/driver/${id}`, {status:userData})
+        const { data } = await axios.put(`https://loadrunner12.herokuapp.com/api/admin/approved/driver/${id}`, {status:userData})
 
         dispatch({
             type: UPDATE_USER_SUCCESS,
@@ -157,7 +157,7 @@ export const getdriverDetails = (id) => async (dispatch) => {
       
 
 
-        const { data } = await axios.get(`/api/admin/alldrivers/${id}`)
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/admin/alldrivers/${id}`)
         dispatch({
             type: USER_DETAILS_SUCCESS,
             payload: data.driver,
@@ -179,7 +179,7 @@ export const upload=(images)=>async(dispatch)=>{
       
 
 
-        const { data } = await axios.post('/api/admin/upload',images)
+        const { data } = await axios.post('https://loadrunner12.herokuapp.com/api/admin/upload',images)
         console.log(data);
         dispatch({
             type: UPLOAD_SUCCESS,
@@ -203,7 +203,7 @@ export const update=(id,userData)=>async(dispatch)=>{
             }
         }
 
-        const {data}= await axios.put(`/api/admin/update/driver/${id}`,{userdata:userData},config)
+        const {data}= await axios.put(`https://loadrunner12.herokuapp.com/api/admin/update/driver/${id}`,{userdata:userData},config)
         console.log(userData);
         dispatch({
             type: UPDATE_IMAGES_SUCCESS,
@@ -225,7 +225,7 @@ export const logindriver=(Phone_No,password)=>async(dispatch)=>{
                      'Content-Type':'application/json'
                  }
                     }
-        const {data}= await axios.post(`/api/driver/login`,{Phone_No,password},config)
+        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/driver/login`,{Phone_No,password},config)
       
         dispatch({type:LOGIN_SUCCESS,
                    payload:data.driver}) 
@@ -243,7 +243,7 @@ export const registerdriver=(userdata)=>async(dispatch)=>{
     try {
         dispatch({type:REGISTER_USER_REQUEST})
        
-        const {data}= await axios.post(`/api/driver/register`,userdata)
+        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/driver/register`,userdata)
         console.log(data)
         dispatch({
             type:REGISTER_USER_SUCCESS,
@@ -263,7 +263,7 @@ export const loaddriver=()=>async(dispatch)=>{
     try {
         dispatch({type:LOAD_USER_REQUEST})
        
-        const {data}= await axios.get(`/api/driver/profile`)
+        const {data}= await axios.get(`https://loadrunner12.herokuapp.com/api/driver/profile`)
         console.log(data);
         dispatch({type:LOAD_USER_SUCCESS,
                    payload:data})
@@ -280,7 +280,7 @@ export const logoutdriver=()=>async(dispatch)=>{
     try {
         
        
-        await axios.get(`/api/driver/logout`)
+        await axios.get(`https://loadrunner12.herokuapp.com/api/driver/logout`)
         dispatch({type:LOGOUT_SUCCESS
                    })
         
