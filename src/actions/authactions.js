@@ -36,7 +36,7 @@ export const login=(email,password)=>async(dispatch)=>{
                      'Content-Type':'application/json'
                  }
                     }
-        const {data}= await axios.post(`/api/user/login`,{email,password},config)
+        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/user/login`,{email,password},config)
       
         dispatch({type:LOGIN_SUCCESS,
                    payload:data.user}) 
