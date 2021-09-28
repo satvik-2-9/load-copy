@@ -31,11 +31,12 @@ import axios from 'axios'
 export const login=(email,password)=>async(dispatch)=>{
     try {
         dispatch({type:LOGIN_REQUEST})
-        const config={
-                 headers:{
-                     'Content-Type':'application/json'
-                 }
-                    }
+        const config = {
+    headers: {
+        withCredentials: true, 
+        'Content-Type': 'application/json'
+    }
+}
         const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/user/login`,{email,password},config)
       
         dispatch({type:LOGIN_SUCCESS,
