@@ -75,10 +75,12 @@ export const loaduser=()=>async(dispatch)=>{
         dispatch({type:LOAD_USER_REQUEST})
        
         const {data}= await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`)
+        console.log(data);
         dispatch({type:LOAD_USER_SUCCESS,
                    payload:data.userprofile})
         
     } catch (error) {
+        console.log(error);
         dispatch({
             type:LOAD_USER_FAIL,
             payload:error.response
