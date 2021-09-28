@@ -1,22 +1,23 @@
-import { LOGIN_REQUEST,
+import {
+    LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    CLEAR_ERRORS ,
+    CLEAR_ERRORS,
     REGISTER_USER_REQUEST,
     REGISTER_USER_FAIL,
-     REGISTER_USER_SUCCESS,
-     LOAD_USER_REQUEST,
-     LOAD_USER_SUCCESS,
-     LOAD_USER_FAIL,
-   LOGOUT_SUCCESS,
-   LOGOUT_FAIL,
-ALL_USERS_REQUEST,
-ALL_USERS_SUCCESS,
-ALL_USERS_FAIL,
-UPDATE_USER_REQUEST,
-UPDATE_USER_SUCCESS,
-UPDATE_USER_FAIL,
-USER_DETAILS_REQUEST,
+    REGISTER_USER_SUCCESS,
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAIL,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAIL,
+    ALL_USERS_REQUEST,
+    ALL_USERS_SUCCESS,
+    ALL_USERS_FAIL,
+    UPDATE_USER_REQUEST,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_FAIL,
+    USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
     UPLOAD_REQUEST,
@@ -24,278 +25,240 @@ USER_DETAILS_REQUEST,
     UPLOAD_FAIL,
     UPDATE_IMAGES_REQUEST,
     UPDATE_IMAGES_SUCCESS,
-    UPDATE_IMAGES_FAIL} from '../constants/authconstants.js'
-    
+    UPDATE_IMAGES_FAIL,
+} from "../constants/authconstants.js";
 
-import axios from 'axios'
-export const login=(email,password)=>async(dispatch)=>{
+import axios from "axios";
+export const login = (email, password) => async (dispatch) => {
     try {
-        dispatch({type:LOGIN_REQUEST})
+        dispatch({ type: LOGIN_REQUEST });
         const config = {
-    headers: {
-        withCredentials: true, 
-        'Content-Type': 'application/json'
-    }
-}
-        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/user/login`,{email,password},config)
-      
-        dispatch({type:LOGIN_SUCCESS,
-                   payload:data.user}) 
-        
+            headers: {
+                withCredentials: true,
+                "Content-Type": "application/json",
+            },
+        };
+        const { data } = await axios.post(`https://loadrunner12.herokuapp.com/api/user/login`, { email, password }, config);
+
+        dispatch({ type: LOGIN_SUCCESS, payload: data.user });
     } catch (error) {
         dispatch({
-            type:LOGIN_FAIL,
-            payload:error.response.data.message
-        })
+            type: LOGIN_FAIL,
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
 //register user
-export const register=(userdata)=>async(dispatch)=>{
+export const register = (userdata) => async (dispatch) => {
     try {
-        dispatch({type:REGISTER_USER_REQUEST})
-       
-        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/user/register`,userdata)
+        dispatch({ type: REGISTER_USER_REQUEST });
+
+        const { data } = await axios.post(`https://loadrunner12.herokuapp.com/api/user/register`, userdata);
         dispatch({
-            type:REGISTER_USER_SUCCESS,
-                   payload:data.user
-                })
-        
+            type: REGISTER_USER_SUCCESS,
+            payload: data.user,
+        });
     } catch (error) {
         dispatch({
-            type:REGISTER_USER_FAIL,
-            payload:error.response.data.message
-        })
+            type: REGISTER_USER_FAIL,
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
 //load user
-export const loaduser=()=>async(dispatch)=>{
+export const loaduser = () => async (dispatch) => {
     try {
-        dispatch({type:LOAD_USER_REQUEST})
-       
-        const {data}= await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`)
-        console.log(data);
-        dispatch({type:LOAD_USER_SUCCESS,
-                   payload:data.userprofile})
-        
+        dispatch({ type: LOAD_USER_REQUEST });
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`);
+        if (data == "user not verify") throw new Error("Error while logging user.");
+        dispatch({ type: LOAD_USER_SUCCESS, payload: data.userprofile });
     } catch (error) {
-        console.log(error);
         dispatch({
-            type:LOAD_USER_FAIL,
-            payload:error.response
-        })
+            type: LOAD_USER_FAIL,
+            payload: error.response,
+        });
     }
-}
+};
 
 //logout user
-export const logoutuser=()=>async(dispatch)=>{
+export const logoutuser = () => async (dispatch) => {
     try {
-        
-       
-        await axios.get(`https://loadrunner12.herokuapp.com/api/user/logout`)
-        dispatch({type:LOGOUT_SUCCESS
-                   })
-        
+        await axios.get(`https://loadrunner12.herokuapp.com/api/user/logout`);
+        dispatch({ type: LOGOUT_SUCCESS });
     } catch (error) {
         dispatch({
-            type:LOGOUT_FAIL,
-            payload:error.response.data.message
-        })
+            type: LOGOUT_FAIL,
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
 // Get all users
 export const allUsers = () => async (dispatch) => {
     try {
+        dispatch({ type: ALL_USERS_REQUEST });
 
-        dispatch({ type: ALL_USERS_REQUEST })
-
-        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/admin/alldrivers`)
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/admin/alldrivers`);
 
         dispatch({
             type: ALL_USERS_SUCCESS,
-            payload: data.alldrivers
-        })
-
+            payload: data.alldrivers,
+        });
     } catch (error) {
         dispatch({
             type: ALL_USERS_FAIL,
-            payload: error.response
-        })
+            payload: error.response,
+        });
     }
-}
+};
 
 // Update User - ADMIN
 export const updateUser = (id, userData) => async (dispatch) => {
-    console.log("User Dispatch",userData)
+    console.log("User Dispatch", userData);
     try {
+        dispatch({ type: UPDATE_USER_REQUEST });
 
-        dispatch({ type: UPDATE_USER_REQUEST })
-     
-      
-
-        const { data } = await axios.put(`https://loadrunner12.herokuapp.com/api/admin/approved/driver/${id}`, {status:userData})
+        const { data } = await axios.put(`https://loadrunner12.herokuapp.com/api/admin/approved/driver/${id}`, { status: userData });
 
         dispatch({
             type: UPDATE_USER_SUCCESS,
-            payload: data
-        })
+            payload: data,
+        });
         console.log(data);
-
     } catch (error) {
-        console.log("User Data",error)
+        console.log("User Data", error);
         dispatch({
             type: UPDATE_USER_FAIL,
-            payload: error
-        })
+            payload: error,
+        });
     }
-}
+};
 
 export const getdriverDetails = (id) => async (dispatch) => {
     try {
+        dispatch({ type: USER_DETAILS_REQUEST });
 
-        dispatch({ type: USER_DETAILS_REQUEST })
-
-      
-
-
-        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/admin/alldrivers/${id}`)
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/admin/alldrivers/${id}`);
         dispatch({
             type: USER_DETAILS_SUCCESS,
             payload: data.driver,
-        })
-
+        });
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
-            payload: error.response.data.message
-        })
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
-export const upload=(images)=>async(dispatch)=>{
+export const upload = (images) => async (dispatch) => {
     try {
+        dispatch({ type: UPLOAD_REQUEST });
 
-        dispatch({ type: UPLOAD_REQUEST })
-
-      
-
-
-        const { data } = await axios.post('https://loadrunner12.herokuapp.com/api/admin/upload',images)
+        const { data } = await axios.post("https://loadrunner12.herokuapp.com/api/admin/upload", images);
         console.log(data);
         dispatch({
             type: UPLOAD_SUCCESS,
-            payload: data
-        })
-   
+            payload: data,
+        });
     } catch (error) {
         dispatch({
             type: UPLOAD_FAIL,
-            payload: error.response
-        })
+            payload: error.response,
+        });
     }
-}
-export const update=(id,userData)=>async(dispatch)=>{
+};
+export const update = (id, userData) => async (dispatch) => {
     try {
-        dispatch({ type: UPDATE_IMAGES_REQUEST })
+        dispatch({ type: UPDATE_IMAGES_REQUEST });
 
-        const config={
-            headers:{
-                'Content-Type':'application/json'
-            }
-        }
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
 
-        const {data}= await axios.put(`https://loadrunner12.herokuapp.com/api/admin/update/driver/${id}`,{userdata:userData},config)
+        const { data } = await axios.put(`https://loadrunner12.herokuapp.com/api/admin/update/driver/${id}`, { userdata: userData }, config);
         console.log(userData);
         dispatch({
             type: UPDATE_IMAGES_SUCCESS,
-            payload: data.success
-        })
-   
+            payload: data.success,
+        });
     } catch (error) {
         dispatch({
             type: UPDATE_IMAGES_FAIL,
-            payload: error.response
-        })
+            payload: error.response,
+        });
     }
-}
-export const logindriver=(Phone_No,password)=>async(dispatch)=>{
+};
+export const logindriver = (Phone_No, password) => async (dispatch) => {
     try {
-        dispatch({type:LOGIN_REQUEST})
-        const config={
-                 headers:{
-                     'Content-Type':'application/json'
-                 }
-                    }
-        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/driver/login`,{Phone_No,password},config)
-      
-        dispatch({type:LOGIN_SUCCESS,
-                   payload:data.driver}) 
-        
+        dispatch({ type: LOGIN_REQUEST });
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        const { data } = await axios.post(`https://loadrunner12.herokuapp.com/api/driver/login`, { Phone_No, password }, config);
+
+        dispatch({ type: LOGIN_SUCCESS, payload: data.driver });
     } catch (error) {
         dispatch({
-            type:LOGIN_FAIL,
-            payload:error.response.data.message
-        })
+            type: LOGIN_FAIL,
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
 //register user
-export const registerdriver=(userdata)=>async(dispatch)=>{
+export const registerdriver = (userdata) => async (dispatch) => {
     try {
-        dispatch({type:REGISTER_USER_REQUEST})
-       
-        const {data}= await axios.post(`https://loadrunner12.herokuapp.com/api/driver/register`,userdata)
-        console.log(data)
+        dispatch({ type: REGISTER_USER_REQUEST });
+
+        const { data } = await axios.post(`https://loadrunner12.herokuapp.com/api/driver/register`, userdata);
+        console.log(data);
         dispatch({
-            type:REGISTER_USER_SUCCESS,
-                   payload:data
-                })
-        
+            type: REGISTER_USER_SUCCESS,
+            payload: data,
+        });
     } catch (error) {
         dispatch({
-            type:REGISTER_USER_FAIL,
-            payload:error.response.data.message
-        })
+            type: REGISTER_USER_FAIL,
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
 //load user
-export const loaddriver=()=>async(dispatch)=>{
+export const loaddriver = () => async (dispatch) => {
     try {
-        dispatch({type:LOAD_USER_REQUEST})
-       
-        const {data}= await axios.get(`https://loadrunner12.herokuapp.com/api/driver/profile`)
+        dispatch({ type: LOAD_USER_REQUEST });
+
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/driver/profile`);
         console.log(data);
-        dispatch({type:LOAD_USER_SUCCESS,
-                   payload:data})
-        
+        dispatch({ type: LOAD_USER_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
-            type:LOAD_USER_FAIL,
-            payload:error.response
-        })
+            type: LOAD_USER_FAIL,
+            payload: error.response,
+        });
     }
-}
+};
 
-export const logoutdriver=()=>async(dispatch)=>{
+export const logoutdriver = () => async (dispatch) => {
     try {
-        
-       
-        await axios.get(`https://loadrunner12.herokuapp.com/api/driver/logout`)
-        dispatch({type:LOGOUT_SUCCESS
-                   })
-        
+        await axios.get(`https://loadrunner12.herokuapp.com/api/driver/logout`);
+        dispatch({ type: LOGOUT_SUCCESS });
     } catch (error) {
         dispatch({
-            type:LOGOUT_FAIL,
-            payload:error.response.data.message
-        })
+            type: LOGOUT_FAIL,
+            payload: error.response.data.message,
+        });
     }
-}
+};
 
-
-export const clearerrors=()=>async (dispatch)=>{
-    dispatch({type:CLEAR_ERRORS})
-}
+export const clearerrors = () => async (dispatch) => {
+    dispatch({ type: CLEAR_ERRORS });
+};
