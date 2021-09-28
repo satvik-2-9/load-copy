@@ -71,7 +71,9 @@ export const register = (userdata) => async (dispatch) => {
 export const loaduser = () => async (dispatch) => {
     try {
         dispatch({ type: LOAD_USER_REQUEST });
-        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`);
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`, {
+            withCredentials: true
+        });
         if (data == "user not verify") throw new Error("Error while logging user.");
         dispatch({ type: LOAD_USER_SUCCESS, payload: data.userprofile });
     } catch (error) {
