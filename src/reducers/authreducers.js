@@ -40,12 +40,14 @@ export const authReducer=(state={user:{}},action)=>{
             case LOGIN_SUCCESS:
             case REGISTER_USER_SUCCESS:
             case LOAD_USER_SUCCESS:
-                return{
+            {  console.log(action.payload)  
+                  return {
                     ...state,
                     loading:false,
                     isAuthenicated:true,
                      user:action.payload
-                }
+                     
+                }}
 
                 case LOGOUT_SUCCESS:
                     return {
