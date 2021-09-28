@@ -33,8 +33,8 @@ export const login = (email, password) => async (dispatch) => {
     try {
         dispatch({ type: LOGIN_REQUEST });
         const config = {
+            withCredentials: true,
             headers: {
-                withCredentials: true,
                 "Content-Type": "application/json",
             },
         };
@@ -71,10 +71,8 @@ export const register = (userdata) => async (dispatch) => {
 export const loaduser = () => async (dispatch) => {
     try {
         dispatch({ type: LOAD_USER_REQUEST });
-        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`, {
-            withCredentials: true
-        });
-        if (data == "user not verify") throw new Error("Error while logging user.");
+
+        const { data } = await axios.get(`https://loadrunner12.herokuapp.com/api/user/profile`);
         dispatch({ type: LOAD_USER_SUCCESS, payload: data.userprofile });
     } catch (error) {
         dispatch({
